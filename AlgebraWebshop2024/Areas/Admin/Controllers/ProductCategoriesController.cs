@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AlgebraWebshop2024.Data;
 using AlgebraWebshop2024.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.CodeAnalysis;
 
 namespace AlgebraWebshop2024.Areas.Admin.Controllers
 {
@@ -65,6 +66,9 @@ namespace AlgebraWebshop2024.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            productCategory.ProductTitle = _context.Product.Where(p => p.Id == productCategory.ProductId).First().Title;
+            productCategory.CategoryTitle = _context.Category.Where(c => c.Id == productCategory.CategoryId).First().Title;
+
             return View(productCategory);
         }
 
@@ -85,8 +89,13 @@ namespace AlgebraWebshop2024.Areas.Admin.Controllers
             var cat=new SelectList(_context.Category, "Id", "Title");
             //TODO: remove already set catetogories
             ViewBag.Categories = cat;
+            ProductCategory pc=new ProductCategory() { 
+                ProductId = productId,
+                ProductTitle = product.Title
+            };
 
-            return View();
+
+            return View(pc);
         }
 
         // POST: Admin/ProductCategories/Create
@@ -96,11 +105,13 @@ namespace AlgebraWebshop2024.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ProductId,CategoryId")] ProductCategory productCategory)
         {
+            ModelState.Remove("ProductTitle");
+            ModelState.Remove("CategoryTitle");
             if (ModelState.IsValid)
             {
                 _context.Add(productCategory);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index),new { productId = productCategory.ProductId });
             }
             return View(productCategory);
         }
@@ -118,6 +129,10 @@ namespace AlgebraWebshop2024.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            var cat = new SelectList(_context.Category, "Id", "Title",productCategory.CategoryId);
+            ViewBag.Categories = cat;
+            productCategory.ProductTitle=_context.Product.Where(p => p.Id == productCategory.ProductId).First().Title;
+
             return View(productCategory);
         }
 
@@ -133,6 +148,8 @@ namespace AlgebraWebshop2024.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("ProductTitle");
+            ModelState.Remove("CategoryTitle");
             if (ModelState.IsValid)
             {
                 try
@@ -151,7 +168,7 @@ namespace AlgebraWebshop2024.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { productId = productCategory.ProductId });
             }
             return View(productCategory);
         }
@@ -171,6 +188,9 @@ namespace AlgebraWebshop2024.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            productCategory.ProductTitle = _context.Product.Where(p => p.Id == productCategory.ProductId).First().Title;
+            productCategory.CategoryTitle = _context.Category.Where(c => c.Id == productCategory.CategoryId).First().Title;
+
             return View(productCategory);
         }
 
@@ -180,13 +200,15 @@ namespace AlgebraWebshop2024.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var productCategory = await _context.ProductCategory.FindAsync(id);
+            int productId=0;
             if (productCategory != null)
             {
+                productId = productCategory.ProductId;
                 _context.ProductCategory.Remove(productCategory);
             }
-
+            
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index),new { productId = productId});
         }
 
         private bool ProductCategoryExists(int id)
