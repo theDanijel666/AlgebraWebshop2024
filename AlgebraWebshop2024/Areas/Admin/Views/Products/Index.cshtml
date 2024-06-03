@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
+                Image
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
@@ -44,6 +47,25 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                    @if (item.ProductImages == null || item.ProductImages.Count<1)
+                    {
+                        <img width="100" src="/Images/no-image.png" alt="no image" />
+                    }
+                    else
+                    {
+                        var mainImg = item.ProductImages.Where(i=>i.MainImage==true).FirstOrDefault();
+                        if (mainImg != null)
+                        {
+                            <img width ="100" src="@mainImg.ImageUrl" alt="@mainImg.Name" />
+                        }
+                        else
+                        {
+                            <img width="100" src="@item.ProductImages.First().ImageUrl" alt="@item.ProductImages.First().Name" />
+                        }
+                    }
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)

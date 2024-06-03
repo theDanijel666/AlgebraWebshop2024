@@ -1,0 +1,83 @@
+﻿@model IEnumerable<AlgebraWebshop2024.Models.Product>
+
+@{
+    ViewData["Title"] = "Product";
+}
+
+<h2>Product list</h2>
+<div class="row mb-5">
+    <div class="col-md-2">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filter by cathegory
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                @foreach(var item in ViewBag.Categories)
+                {
+                    <a class="dropdown-item" asp-action="Product" asp-route-categoryId="@item.Value">@item.Text</a>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <a asp-action="Product" class="btn btn-warning">Reset filters</a>
+    </div>
+</div>
+
+
+<div class="row">
+    @foreach (var item in Model) {
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    @if(item.ProductImages == null || item.ProductImages.Count<1)
+                    {
+                        <img class="card-img" src="/Images/no-image.png" alt="no image" />
+                    }
+                    else
+                    {
+                        var mainImg = item.ProductImages.Where(i=>i.MainImage==true).FirstOrDefault();
+                        if(mainImg != null)
+                        {
+                            <img class="card-img" src="@mainImg.ImageUrl" alt="@item.Title" />
+                        }
+                        else
+                        {
+                            <img class="card-img" src="@item.ProductImages.First().ImageUrl" alt="@item.ProductImages.First().Name" />
+                        }
+                    }
+                    <p class="card-text">@item.Description</p>
+                    <hr />
+                    <table class="table table-condensed table-hover">
+                        <thead>
+                            <tr>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@item.TotalPrice().ToString("0.00") €</td>
+                                <td>
+                                    @if (item.Quantity > 0)
+                                    {
+                                        <form method="post" asp-controller="Cart" asp-action="AddToCart">
+                                            <input type="hidden" name="productId" value="@item.Id" />
+                                            <input type="hidden" name="quantity" value="1" />
+                                            <input type="submit" class="btn btn-success btn-sm" value="Add to cart" />
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-danger btn-sm" disabled>Out of stock</button>
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

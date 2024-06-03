@@ -26,7 +26,12 @@ namespace AlgebraWebshop2024.Areas.Admin.Controllers
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Product.ToListAsync());
+            var products = await _context.Product.ToListAsync();
+            products.ForEach(
+                products => products.ProductImages = _context.ProductImage.Where(
+                    i => i.ProductId == products.Id).ToList()
+            );
+            return View(products);
         }
 
         // GET: Admin/Products/Details/5
