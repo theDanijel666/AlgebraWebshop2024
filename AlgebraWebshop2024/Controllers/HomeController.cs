@@ -1,4 +1,5 @@
 using AlgebraWebshop2024.Data;
+using AlgebraWebshop2024.Extensions;
 using AlgebraWebshop2024.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ namespace AlgebraWebshop2024.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        public const string SessionKeyName = "_cart";
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
@@ -54,6 +56,18 @@ namespace AlgebraWebshop2024.Controllers
             return View(products);
         }
 
+        public IActionResult Order(List<string> errors)
+        {
+            List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(SessionKeyName) ?? new List<CartItem>();
+
+            if (cart.Count == 0)
+            {
+                return RedirectToAction(nameof(Product));
+            }
+            ViewBag.TotalPrice = cart.Sum(item => item.getTotal());
+            ViewBag.Errors = errors;
+            return View(cart);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

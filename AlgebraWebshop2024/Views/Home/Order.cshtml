@@ -1,0 +1,121 @@
+﻿@model List<AlgebraWebshop2024.Extensions.CartItem>
+@{
+    ViewData["Title"] = "Order";
+}
+
+<div class="text-center mb-3">
+    <h1 class="display-4">Place your order</h1>
+</div>
+<hr />
+<div class="container">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="text-center">
+                <h4>Cart items</h4>
+            </div>
+            <table class="table">
+                <thhead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thhead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Product.Title</td>
+                            <td>@item.Product.TotalPrice().ToString("0.00") €</td>
+                            <td>
+                                <form method="post" asp-controller="Cart" asp-action="UpdateCart">
+                                    <input name="quantity" value="@item.Quantity" />
+                                    <input name="productId" type="hidden" value="@item.Product.Id" />
+                                    <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                </form>
+
+                            </td>
+                            <td>@item.getTotal().ToString("0.00") €</td>
+                            <td>
+                                <a class="btn btn-sm btn-danger" asp-controller="Cart" asp-action="RemoveFromCart"
+                                   asp-route-productId="@item.Product.Id">Remove</a>
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="3" class="text-right"></td>
+                        <td><b>Total price: @ViewBag.TotalPrice.ToString("0.00") €</b></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            <div class="text-center">
+                <h4>Personal information</h4>
+            </div>
+            @if (ViewBag.Errors.Count > 0)
+            {
+                <div class="alert alert-danger text-center" role="alert">
+                    @foreach(var error in ViewBag.Errors)
+                    {
+                        <p>@error</p>
+                    })
+                </div>
+            }
+            <form method="post" asp-controller="Home" asp-action="CreateOrder">
+                <div class="text-body">
+                    <h5>Billing information:</h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="BilingFirstName">First name *</label>
+                        <input type="text" class="form-control" id="BilingFirstName" name="BilingFirstName" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="BilingLastName">Last name *</label>
+                        <input type="text" class="form-control" id="BilingLastName" name="BilingLastName" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="BilingEmailAddress">E-mail *</label>
+                        <input type="text" class="form-control" id="BilingEmailAddress" name="BilingEmailAddress" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="BilingPhone">Phone *</label>
+                        <input type="text" class="form-control" id="BilingPhone" name="BilingPhone" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <label for="BillingAddress">Address *</label>
+                    <input type="text" class="form-control" id="BillingAddress" name="BillingAddress" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="BillingCity">City *</label>
+                        <input type="text" class="form-control" id="BillingCity" name="BillingCity" required>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="BillingCountry">Country *</label>
+                        <select id="BillingCountry" class="form-control" name="BillingCountry">
+                            <option value="Croatia">Croatia</option>
+                            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Slovenia">Slovenia</option>
+                            <option value="Montenegro">Montenegro</option>
+                            <option value="Macedonia">Macedonia</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

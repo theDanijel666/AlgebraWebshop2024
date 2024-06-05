@@ -1,6 +1,15 @@
-﻿<li class="nav-item">
+﻿@using AlgebraWebshop2024.Extensions
+@using Microsoft.AspNetCore.Mvc
+@inject IHttpContextAccessor HttpContextAccessor
+
+<li class="nav-item">
     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="product">Products</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+    @{
+        List<CartItem> cart = HttpContextAccessor.HttpContext.Session.GetObjectFromJson<List<CartItem>>("_cart") ?? new List<CartItem>() ;
+        string cartcount = "";
+        if(cart.Count>0) cartcount = $"({cart.Count})";
+    }
+    <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index">Cart @cartcount</a>
 </li>

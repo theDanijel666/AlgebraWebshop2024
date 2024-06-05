@@ -1,5 +1,60 @@
-﻿@*
+﻿@model List<AlgebraWebshop2024.Extensions.CartItem>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
+
+@if (Model.Count == 0)
+{
+    <div class="text-center">
+                <h1 class="display-4">Your cart is empty</h1>
+                <hr />
+                <a asp-controller="Home" asp-action="Product">Continue shopping</a>
+    </div>
+}
+else
+{
+    <div class="text-center">
+        <h1 class="display-4">Cart items</h1>
+    </div>
+    <table class="table">
+        <thhead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thhead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.Product.Title</td>
+                    <td>@item.Product.TotalPrice().ToString("0.00") €</td>
+                    <td>
+                        <form method="post" asp-action="UpdateCart">
+                            <input name="quantity" value="@item.Quantity" />
+                            <input name="productId" type="hidden" value="@item.Product.Id" />
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </form>
+                        
+                    </td>
+                    <td>@item.getTotal().ToString("0.00") €</td>
+                    <td>
+                        <a class="btn btn-sm btn-danger" asp-action="RemoveFromCart" 
+                                asp-route-productId="@item.Product.Id">Remove</a>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="3" class="text-right"></td>
+                <td><b>Total price: @ViewBag.TotalPrice.ToString("0.00") €</b></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <a class="btn btn-primary btn-lg float-left" asp-controller="Home" asp-action="Product">Continue shopping</a>
+    <a class="btn btn-success btn-lg float-right" asp-controller="Home" asp-action="Order">Order products</a>
 }
