@@ -16,9 +16,9 @@ namespace AlgebraWebshop2024.Models
         public decimal DiscountAmmount { get; set; } = 0;
 
         [StringLength(200,ErrorMessage ="Message too long! Limi to 200 characters")]
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         [ForeignKey("OrderId")]
         public virtual ICollection<OrderItem> OrderItems { get; set; }

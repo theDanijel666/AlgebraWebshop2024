@@ -65,7 +65,7 @@
                     @foreach(var error in ViewBag.Errors)
                     {
                         <p>@error</p>
-                    })
+                    }
                 </div>
             }
             <form method="post" asp-controller="Home" asp-action="CreateOrder">
@@ -73,35 +73,48 @@
                     <h5>Billing information:</h5>
                 </div>
                 <div class="row">
+                    <div class="col-md-4">
+                        <label for="PaymentMethod">Payment method</label>
+                        <select id="PaymentMethod" class="form-control" name="PaymentMethod">
+                            <option value="CreditCard">Credit card</option>
+                            <option value="PayPal">PayPal</option>
+                            <option value="Cash">Cash on pickup</option>
+                            <option value="Transfer">Bank transfer</option>
+                         </select>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
-                        <label for="BilingFirstName">First name *</label>
-                        <input type="text" class="form-control" id="BilingFirstName" name="BilingFirstName" required>
+                        <label for="BillingFirstName">First name *</label>
+                        <input type="text" class="form-control" id="BillingFirstName" name="BillingFirstName" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="BilingLastName">Last name *</label>
-                        <input type="text" class="form-control" id="BilingLastName" name="BilingLastName" required>
+                        <label for="BillingLastName">Last name *</label>
+                        <input type="text" class="form-control" id="BillingLastName" name="BillingLastName" required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="BilingEmailAddress">E-mail *</label>
-                        <input type="text" class="form-control" id="BilingEmailAddress" name="BilingEmailAddress" required>
+                        <label for="BillingEmailAddress">E-mail *</label>
+                        <input type="text" class="form-control" id="BillingEmailAddress" name="BillingEmailAddress" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="BilingPhone">Phone *</label>
-                        <input type="text" class="form-control" id="BilingPhone" name="BilingPhone" required>
+                        <label for="BillingPhone">Phone *</label>
+                        <input type="text" class="form-control" id="BillingPhone" name="BillingPhone" required>
                     </div>
                 </div>
                 <div class="row">
-                    <label for="BillingAddress">Address *</label>
-                    <input type="text" class="form-control" id="BillingAddress" name="BillingAddress" required>
+                    <div class="col-md-12">
+                        <label for="BillingAddress">Address *</label>
+                        <input type="text" class="form-control" id="BillingAddress" name="BillingAddress" required>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <label for="BillingCity">City *</label>
                         <input type="text" class="form-control" id="BillingCity" name="BillingCity" required>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <label for="BillingCountry">Country *</label>
                         <select id="BillingCountry" class="form-control" name="BillingCountry">
                             <option value="Croatia">Croatia</option>
@@ -111,6 +124,112 @@
                             <option value="Montenegro">Montenegro</option>
                             <option value="Macedonia">Macedonia</option>
                         </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="BillingZip">ZIP *</label>
+                        <input type="text" class="form-control" id="BillingZip" name="BillingZip" />
+                    </div>
+                </div>
+
+                <hr />
+
+                <div class="text-body">
+                    <h5>Shipping information:</h5>
+                </div>
+                <div class="row">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" id="ShippingSameAsBilling" 
+                                name="ShippingSameAsBilling" onchange="hideshowshippinginfo()">
+                        Same as billing
+                     </label>
+                     <script>
+                         function hideshowshippinginfo(){
+                             var cbx = document.getElementById("ShippingSameAsBilling");
+                             var shippinginfo = document.getElementById("shippinginfo");
+                             if(cbx.checked){
+                                 shippinginfo.style.display = "none";
+                                 document.getElementById("ShippingFirstName").removeAttribute("required");
+                                 document.getElementById("ShippingLastName").removeAttribute("required");
+                                 document.getElementById("ShippingEmailAddress").removeAttribute("required");
+                                 document.getElementById("ShippingPhone").removeAttribute("required");
+                                 document.getElementById("ShippingAddress").removeAttribute("required");
+                                 document.getElementById("ShippingCity").removeAttribute("required");
+                                 document.getElementById("ShippingZip").removeAttribute("required");
+                             } else {
+                                 shippinginfo.style.display = "block";
+                                 document.getElementById("ShippingFirstName").setAttribute("required", "required");
+                                 document.getElementById("ShippingLastName").setAttribute("required", "required");
+                                 document.getElementById("ShippingEmailAddress").setAttribute("required", "required");
+                                 document.getElementById("ShippingPhone").setAttribute("required", "required");
+                                 document.getElementById("ShippingAddress").setAttribute("required", "required");
+                                 document.getElementById("ShippingCity").setAttribute("required", "required");
+                                 document.getElementById("ShippingZip").setAttribute("required", "required");
+                             }
+                         }
+                     </script>
+                </div>
+                <div id="shippinginfo">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="ShippingFirstName">First name *</label>
+                        <input type="text" class="form-control" id="ShippingFirstName" name="ShippingFirstName" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="ShippingLastName">Last name *</label>
+                            <input type="text" class="form-control" id="ShippingLastName" name="ShippingLastName" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="ShippingEmailAddress">E-mail *</label>
+                            <input type="text" class="form-control" id="ShippingEmailAddress" name="ShippingEmailAddress" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="ShippingPhone">Phone *</label>
+                            <input type="text" class="form-control" id="ShippingPhone" name="ShippingPhone" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="ShippingAddress">Address *</label>
+                            <input type="text" class="form-control" id="ShippingAddress" name="ShippingAddress" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="ShippingCity">City *</label>
+                            <input type="text" class="form-control" id="ShippingCity" name="ShippingCity" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="ShippingCountry">Country *</label>
+                        <select id="ShippingCountry" class="form-control" name="ShippingCountry">
+                            <option value="Croatia">Croatia</option>
+                            <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                            <option value="Serbia">Serbia</option>
+                            <option value="Slovenia">Slovenia</option>
+                            <option value="Montenegro">Montenegro</option>
+                            <option value="Macedonia">Macedonia</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="ShippingZip">ZIP *</label>
+                        <input type="text" class="form-control" id="ShippingZip" name="ShippingZip" required/>
+                    </div>
+                </div>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="Message">Message</label>
+                        <textarea class="form-control" id="Message" name="Message"></textarea>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-success btn-lg float-end">Place order</button>
                     </div>
                 </div>
             </form>
