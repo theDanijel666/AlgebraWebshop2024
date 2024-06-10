@@ -1,0 +1,132 @@
+﻿@model AlgebraWebshop2024.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Order @Model.Id</h4>
+    <hr />
+    <h4>Billing details:</h4>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Address</th>
+                <th scope="col">City</th>
+                <th scope="col">Zip</th>
+                <th scope="col">Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.BillingFirstName)</td>
+                <td>@Html.DisplayFor(model => model.BillingLastName)</td>
+                <td>@Html.DisplayFor(model => model.BillingEmailAddress)</td>
+                <td>@Html.DisplayFor(model => model.BillingPhone)</td>
+                <td>@Html.DisplayFor(model => model.BillingAddress)</td>
+                <td>@Html.DisplayFor(model => model.BillingCity)</td>
+                <td>@Html.DisplayFor(model => model.BillingZip)</td>
+                <td>@Html.DisplayFor(model => model.BillingCountry)</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <h4>Shipping details:</h4>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Address</th>
+                <th scope="col">City</th>
+                <th scope="col">Zip</th>
+                <th scope="col">Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.ShippingFirstName)</td>
+                <td>@Html.DisplayFor(model => model.ShippingLastName)</td>
+                <td>@Html.DisplayFor(model => model.ShippingEmailAddress)</td>
+                <td>@Html.DisplayFor(model => model.ShippingPhone)</td>
+                <td>@Html.DisplayFor(model => model.ShippingAddress)</td>
+                <td>@Html.DisplayFor(model => model.ShippingCity)</td>
+                <td>@Html.DisplayFor(model => model.ShippingZip)</td>
+                <td>@Html.DisplayFor(model => model.ShippingCountry)</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+    <br />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DiscountAmmount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DiscountAmmount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Message)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Message)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsPaid)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsPaid)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PaymentMethod)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PaymentMethod)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            User
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.UserId == null)
+            {
+                <label> Anonymus user (Guest)</label>
+            }
+            else
+            {
+                string displayUser = ViewBag.User.FirstName + " " + ViewBag.User.LastName;
+                <label>@displayUser</label>
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            Total price
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.TotalPrice().ToString("C")
+        </dd>
+    </dl>
+    <partial name="_OrderItemsPartial" for="@Model.OrderItems" />
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

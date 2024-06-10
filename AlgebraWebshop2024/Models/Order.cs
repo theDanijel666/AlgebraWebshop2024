@@ -9,7 +9,7 @@ namespace AlgebraWebshop2024.Models
         public int Id { get; set; }
 
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime DateCreated { get; set; }=DateTime.Now;
 
         [Column(TypeName = "decimal(12, 4)")]
@@ -38,6 +38,7 @@ namespace AlgebraWebshop2024.Models
         //public string PaymentMethodToken { get; set; }
         //public string PaymentMethodStatus { get; set; }
         //public string PaymentMethodMessage { get; set; }
+        public string Status { get; set; } = "Pending";
 
         //billing info
         [Required(ErrorMessage = "First name is required")]

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<AlgebraWebshop2024.Models.Order>
+
+@{
+    ViewData["Title"] = "Index";
+    List<AlgebraWebshop2024.Data.ApplicationUser> users=ViewBag.Users;
+}
+
+<h1>Order administration</h1>
+
+@* <p>
+    <a asp-action="Create">Create New</a>
+</p> *@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                User
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPaid)
+            </th>
+            <th>
+                Total price
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                    @if (item.UserId == null)
+                    {
+                        <label> Anonymus user (Guest)</label>
+                    }
+                    else
+                    {
+                        var user=users.FirstOrDefault(u=>u.Id==item.UserId);
+                        string displayUser=user.FirstName+" "+user.LastName;
+                        <label>@displayUser</label>
+                    }
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsPaid)
+            </td>
+            <td>
+                @item.TotalPrice().ToString("C")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                <a asp-action="Cancel" asp-route-id="@item.Id">Cancel</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
