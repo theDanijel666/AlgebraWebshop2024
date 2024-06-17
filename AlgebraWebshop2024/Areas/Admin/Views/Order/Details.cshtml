@@ -126,7 +126,15 @@
     </dl>
     <partial name="_OrderItemsPartial" for="@Model.OrderItems" />
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+@if (Context.Request.Path.ToString().Contains("MyOrderDetails"))
+{
+    <div>
+        <a asp-action="MyOrders">Back to List</a>
+    </div>
+}
+else{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+}

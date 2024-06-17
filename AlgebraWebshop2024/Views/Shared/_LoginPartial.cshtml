@@ -7,7 +7,15 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        <div class="dropdown">
+            <a class="nav-link text-dark dropdown-toggle" data-bs-toggle="dropdown" role="button" href="#">
+                Hello @User.Identity?.Name!
+            </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage profile</a>
+                    <a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="MyOrders">My Orders</a>
+                </div>
+        </div>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
