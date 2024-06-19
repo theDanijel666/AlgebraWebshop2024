@@ -30,6 +30,7 @@
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
+                    <a asp-action="ProductDetails" asp-route-id="@item.Id" style="text-decoration:none;color:inherit">
                     <h5 class="card-title">@item.Title</h5>
                     @if(item.ProductImages == null || item.ProductImages.Count<1)
                     {
@@ -47,7 +48,20 @@
                             <img class="card-img" src="@item.ProductImages.First().ImageUrl" alt="@item.ProductImages.First().Name" />
                         }
                     }
-                    <p class="card-text">@item.Description</p>
+                       
+                            @if(item.Description.Length > 40)
+                            {
+                                 <p class="card-text">
+                                     @item.Description.Substring(0,40) ...
+                                 </p>
+                            }
+                            else
+                            {
+                                <p class="card-text">
+                                    @item.Description
+                                </p>
+                            }
+                    </a>
                     <hr />
                     <table class="table table-condensed table-hover">
                         <thead>

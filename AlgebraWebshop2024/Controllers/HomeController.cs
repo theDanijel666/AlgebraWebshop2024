@@ -57,6 +57,30 @@ namespace AlgebraWebshop2024.Controllers
             return View(products);
         }
 
+        public IActionResult ProductDetails(int? id)
+        {
+            if(id==null || id == 0)
+            {
+               return RedirectToAction(nameof(Product));
+            }
+
+            var product=_context.Product.Where(p=>p.Id==id).FirstOrDefault();
+            if(product==null)
+            {
+                return RedirectToAction(nameof(Product));
+            }
+
+            product.ProductImages=_context.ProductImage.Where(pi=>pi.ProductId==product.Id).ToList();
+            product.ProductCategories=_context.ProductCategory.Where(pc=>pc.ProductId==product.Id).ToList();
+            foreach(var pc in product.ProductCategories)
+            {
+                pc.CategoryTitle = _context.Category.Where(c => c.Id == pc.CategoryId).First().Title;
+                pc.ProductTitle = product.Title;
+            }
+
+            return View(product);
+        }
+
         public IActionResult Order(List<string> errors)
         {
             List<CartItem> cart = HttpContext.Session.GetObjectFromJson<List<CartItem>>(SessionKeyName) ?? new List<CartItem>();

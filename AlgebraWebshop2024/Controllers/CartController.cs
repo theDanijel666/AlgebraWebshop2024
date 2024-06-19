@@ -25,7 +25,7 @@ namespace AlgebraWebshop2024.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddToCart(int productId)
+        public IActionResult AddToCart(int productId, decimal quantity)
         {
             List<CartItem> cart=HttpContext.Session.GetObjectFromJson<List<CartItem>>(SessionKeyName) ?? new List<CartItem>();
 
@@ -34,7 +34,7 @@ namespace AlgebraWebshop2024.Controllers
             {
                 if (item.Product.Id == productId)
                 {
-                    item.Quantity++;
+                    item.Quantity+= quantity;
                     new_item = false;
                 }
             }
@@ -44,7 +44,7 @@ namespace AlgebraWebshop2024.Controllers
                 CartItem new_product = new CartItem()
                 {
                     Product = _context.Product.Find(productId),
-                    Quantity = 1
+                    Quantity = quantity
                 };
                 cart.Add(new_product);
             }
